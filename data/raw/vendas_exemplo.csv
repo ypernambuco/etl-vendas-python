@@ -1,0 +1,9 @@
+ID Venda,Data Venda,Cliente,Produto,Quantidade,Preco Unitario,Desconto
+1001,01/05/2026,Ana Silva,Notebook,1,3500.00,150.00
+1002,02/05/2026,Bruno Costa,Mouse,2,80.50,0
+1003,03/05/2026,Carla Lima,Teclado,1,230.90,10.90
+1003,03/05/2026,Carla Lima,Teclado,1,230.90,10.90
+1004,04/05/2026,,Monitor,1,1200.00,
+1005,05/05/2026,Diego Souza,,3,45.00,5.00
+1006,,Fernanda Alves,Webcam,1,320.00,0
+1007,07/05/2026,Gustavo Rocha,Cadeira,1,,25.00
