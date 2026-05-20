@@ -92,7 +92,7 @@ source .venv/bin/activate
 Instale as dependencias:
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ## Como Rodar O ETL
@@ -103,10 +103,22 @@ Execute com os caminhos padrao:
 python -m src.etl
 ```
 
+No Windows, se o comando `python` nao estiver disponivel, use o launcher:
+
+```bash
+py -m src.etl
+```
+
 Ou informe entrada, saida e log explicitamente:
 
 ```bash
 python -m src.etl --input data/raw/vendas_exemplo.csv --output data/processed/vendas_processadas.parquet --log-file logs/etl_vendas.log
+```
+
+Tambem e possivel executar o arquivo diretamente:
+
+```bash
+python src/etl.py
 ```
 
 ## Exemplo De Entrada

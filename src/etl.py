@@ -1,10 +1,14 @@
 import argparse
 import logging
 import re
+import sys
 import unicodedata
 from pathlib import Path
 
 import pandas as pd
+
+if __package__ in {None, ""}:
+    sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from src.config import DEFAULT_INPUT_FILE, DEFAULT_LOG_FILE, DEFAULT_OUTPUT_FILE
 from src.logger import setup_logger
@@ -104,7 +108,13 @@ def export_parquet(dataframe: pd.DataFrame, output_file: Path, logger: logging.L
     """Exporta o DataFrame limpo para Parquet."""
     output_file.parent.mkdir(parents=True, exist_ok=True)
     logger.info("Exportando Parquet: %s", output_file)
-    dataframe.to_parquet(output_file, index=False)
+    try:
+        dataframe.to_parquet(output_file, index=False)
+    except ImportError:
+        raise ImportError(
+            "Dependencia para exportar Parquet nao encontrada. "
+            "Instale as dependencias com: python -m pip install -r requirements.txt"
+        ) from None
     logger.info("Arquivo Parquet exportado com sucesso")
 
 
@@ -116,6 +126,9 @@ def run_pipeline(input_file: Path, output_file: Path, log_file: Path) -> None:
         raw_data = read_csv(input_file, logger)
         clean_dataset = clean_data(raw_data, logger)
         export_parquet(clean_dataset, output_file, logger)
+    except ImportError as error:
+        logger.error("Pipeline ETL falhou: %s", error)
+        raise
     except Exception:
         logger.exception("Pipeline ETL falhou")
         raise
@@ -146,6 +159,15 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main() -> int:
     args = parse_args()
-    run_pipeline(args.input, args.output, args.log_file)
+    try:
+        run_pipeline(args.input, args.output, args.log_file)
+    except Exception as error:
+        print(f"Erro: {error}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
