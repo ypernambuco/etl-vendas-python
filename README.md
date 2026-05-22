@@ -32,6 +32,8 @@ etl-vendas-python/
 |       |-- .gitkeep
 |-- logs/
 |   |-- .gitkeep
+|-- assets/
+|   |-- screenshots/
 |-- src/
 |   |-- __init__.py
 |   |-- config.py
@@ -82,11 +84,13 @@ Outro aprendizado foi deixar os caminhos principais em um arquivo de configuraç
 Este projeto ainda é pequeno e tem algumas limitações importantes:
 
 - o dataset é fictício e bem reduzido;
+- o pipeline processa um CSV por execução;
 - a validação dos dados ainda é simples;
 - não existe carga em banco de dados;
 - não há testes automatizados específicos para este projeto ainda;
 - os indicadores analíticos ainda não foram separados em uma camada própria;
-- não existe orquestração do pipeline.
+- não existe orquestração do pipeline;
+- os logs ajudam a acompanhar a execução, mas ainda são básicos.
 
 Essas limitações fazem parte do escopo atual. A intenção é evoluir o projeto aos poucos, mantendo as mudanças fáceis de entender.
 
@@ -137,6 +141,10 @@ python -m src.etl --input data/raw/vendas_exemplo.csv --output data/processed/ve
 ```
 
 Uso `python -m src.etl` para executar o módulo a partir da raiz do projeto. Isso deixa os imports mais previsíveis e evita depender do caminho do arquivo.
+
+## Exemplo De Execução
+
+![Execução do ETL no terminal](assets/screenshots/terminal-etl.png)
 
 ## Exemplo De Entrada
 
