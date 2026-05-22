@@ -7,11 +7,11 @@
 
 Projeto simples de ETL de vendas feito para praticar Python, pandas e organização básica de um pipeline de dados.
 
-A ideia é partir de um arquivo CSV pequeno, aplicar algumas regras de limpeza e salvar uma versão processada em Parquet. É um estudo prático, sem tentar parecer um sistema de produção.
+A ideia é partir de um arquivo CSV pequeno, aplicar algumas regras de limpeza e salvar uma versão processada em Parquet. O foco aqui foi praticar um fluxo comum de dados sem tentar transformar o projeto em algo complexo demais.
 
 ## Objetivo
 
-Praticar as etapas principais de um ETL em um cenário fácil de explicar:
+Praticar etapas comuns de um ETL em um cenário simples:
 
 - ler dados de vendas a partir de um CSV;
 - padronizar nomes de colunas;
@@ -75,24 +75,30 @@ flowchart LR
 
 ## Aprendizados
 
-Durante este projeto, pratiquei principalmente a separação entre entrada, transformação e saída dos dados. Também foi útil perceber alguns detalhes comuns em dados reais, como nomes de colunas inconsistentes, datas inválidas, campos vazios e linhas duplicadas.
+Durante este projeto, pratiquei principalmente a separação entre entrada, transformação e saída dos dados.
 
-Outro aprendizado foi deixar os caminhos principais em um arquivo de configuração simples e permitir que o ETL também receba caminhos pela linha de comando. Isso facilita testar o pipeline com outros arquivos sem mudar o código.
+Também foi útil lidar com alguns problemas simples que aparecem em dados reais, como:
+- nomes de colunas inconsistentes;
+- datas inválidas;
+- campos vazios;
+- linhas duplicadas.
+
+Outro aprendizado foi organizar os caminhos principais em um arquivo de configuração simples e permitir que o ETL receba caminhos pela linha de comando. Isso facilitou testar o pipeline com outros arquivos sem precisar alterar o código.
 
 ## Limitações
 
-Este projeto ainda é pequeno e tem algumas limitações importantes:
+O projeto ainda tem algumas limitações:
 
-- o dataset é fictício e bem reduzido;
+- o dataset é fictício e pequeno;
 - o pipeline processa um CSV por execução;
 - a validação dos dados ainda é simples;
 - não existe carga em banco de dados;
-- não há testes automatizados específicos para este projeto ainda;
-- os indicadores analíticos ainda não foram separados em uma camada própria;
+- ainda não possui testes automatizados;
+- os indicadores ainda são básicos;
 - não existe orquestração do pipeline;
-- os logs ajudam a acompanhar a execução, mas ainda são básicos.
+- os logs ainda são simples.
 
-Essas limitações fazem parte do escopo atual. A intenção é evoluir o projeto aos poucos, mantendo as mudanças fáceis de entender.
+A ideia é evoluir o projeto aos poucos, mantendo tudo fácil de entender e explicar.
 
 ## Como Instalar
 
@@ -128,19 +134,19 @@ Execute com os caminhos padrão:
 python -m src.etl
 ```
 
-No Windows, se o comando `python` não estiver disponível, use o launcher:
+No Windows, se o comando `python` não estiver disponível, use:
 
 ```powershell
 py -m src.etl
 ```
 
-Ou informe entrada, saída e log explicitamente:
+Também é possível informar entrada, saída e log manualmente:
 
 ```bash
 python -m src.etl --input data/raw/vendas_exemplo.csv --output data/processed/vendas_processadas.parquet --log-file logs/etl_vendas.log
 ```
 
-Uso `python -m src.etl` para executar o módulo a partir da raiz do projeto. Isso deixa os imports mais previsíveis e evita depender do caminho do arquivo.
+Uso `python -m src.etl` para executar o módulo a partir da raiz do projeto. Isso ajuda a evitar problemas de importação entre os arquivos do pacote.
 
 ## Exemplo De Execução
 
@@ -189,12 +195,12 @@ Os logs são gerados em:
 logs/etl_vendas.log
 ```
 
-Eles registram início e fim do pipeline, quantidade de linhas lidas, colunas padronizadas, duplicatas removidas, datas inválidas descartadas e exportação do Parquet.
+Eles registram início e fim da execução, quantidade de linhas lidas, colunas padronizadas, duplicatas removidas e exportação do Parquet.
 
 ## Próximos Passos
 
-- Adicionar testes automatizados para as transformações principais.
-- Criar validações simples de qualidade dos dados.
-- Gerar métricas agregadas por produto e período.
-- Criar consultas SQL usando SQLite.
-- Montar um dashboard simples com os indicadores gerados.
+- adicionar testes automatizados para as transformações principais;
+- criar validações simples de qualidade dos dados;
+- gerar métricas agregadas por produto e período;
+- criar consultas SQL usando SQLite;
+- montar um dashboard simples com os indicadores gerados.
