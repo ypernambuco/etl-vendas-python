@@ -2,24 +2,26 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![pandas](https://img.shields.io/badge/pandas-2.2.3-150458?style=for-the-badge&logo=pandas&logoColor=white)
-![Status](https://img.shields.io/badge/status-concluido-2E8B57?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-em%20evolu%C3%A7%C3%A3o-2E8B57?style=for-the-badge)
 ![License](https://img.shields.io/badge/licen%C3%A7a-MIT-blue?style=for-the-badge)
 
-Projeto de portfolio que implementa um pipeline ETL de vendas em Python. O pipeline le um arquivo CSV bruto, limpa e transforma os dados com pandas, calcula metricas de venda, registra logs de execucao e salva o resultado em formato Parquet.
+Projeto simples de ETL de vendas feito para praticar Python, pandas e organização básica de um pipeline de dados.
+
+A ideia é partir de um arquivo CSV pequeno, aplicar algumas regras de limpeza e salvar uma versão processada em Parquet. O projeto não tenta simular uma arquitetura de produção; ele serve como estudo prático e como registro da minha evolução com dados.
 
 ## Objetivo
 
-Demonstrar uma arquitetura simples e profissional para processamento de dados de vendas, cobrindo as principais etapas de um ETL:
+Praticar as etapas principais de um ETL em um cenário fácil de explicar:
 
-- extracao de dados a partir de CSV;
-- limpeza e padronizacao dos dados;
-- tratamento de nulos e duplicatas;
-- conversao de datas;
-- criacao de colunas derivadas;
-- carga dos dados processados em Parquet;
-- registro de logs para auditoria da execucao.
+- ler dados de vendas a partir de um CSV;
+- padronizar nomes de colunas;
+- tratar duplicatas, campos vazios e datas inválidas;
+- converter colunas numéricas;
+- criar a coluna `valor_total`;
+- salvar o resultado em Parquet;
+- registrar logs simples da execução.
 
-## Arquitetura
+## Estrutura Do Projeto
 
 ```text
 etl-vendas-python/
@@ -40,14 +42,14 @@ etl-vendas-python/
 |-- requirements.txt
 ```
 
-## Diagrama Do Pipeline
+## Fluxo Do Pipeline
 
 ```mermaid
 flowchart LR
     A["CSV bruto<br/>data/raw/vendas_exemplo.csv"] --> B["Pipeline ETL<br/>src/etl.py"]
-    B --> C["Limpeza e transformacao<br/>pandas"]
+    B --> C["Limpeza e transformação<br/>pandas"]
     C --> D["Parquet processado<br/>data/processed/vendas_processadas.parquet"]
-    B --> E["Logs de execucao<br/>logs/etl_vendas.log"]
+    B --> E["Logs de execução<br/>logs/etl_vendas.log"]
 ```
 
 ## Tecnologias Usadas
@@ -58,16 +60,35 @@ flowchart LR
 - pathlib
 - logging
 
-## Skills Demonstradas
+## O Que Pratiquei
 
-- ETL
-- Data Cleaning
-- Pandas
-- Parquet
-- Logging
-- Estruturacao de Projeto
-- Manipulacao de Dados
-- Pipeline de Dados
+- leitura de arquivos CSV com pandas;
+- limpeza e padronização de dados;
+- tratamento de valores ausentes e duplicados;
+- conversão de datas e números;
+- criação de colunas derivadas;
+- exportação para Parquet;
+- uso de logs para acompanhar a execução;
+- organização simples de um projeto Python.
+
+## Aprendizados
+
+Durante este projeto, pratiquei principalmente a separação entre entrada, transformação e saída dos dados. Também foi útil perceber alguns detalhes comuns em dados reais, como nomes de colunas inconsistentes, datas inválidas, campos vazios e linhas duplicadas.
+
+Outro aprendizado foi deixar os caminhos principais em um arquivo de configuração simples e permitir que o ETL também receba caminhos pela linha de comando. Isso facilita testar o pipeline com outros arquivos sem mudar o código.
+
+## Limitações
+
+Este projeto ainda é pequeno e tem algumas limitações importantes:
+
+- o dataset é fictício e bem reduzido;
+- a validação dos dados ainda é simples;
+- não existe carga em banco de dados;
+- não há testes automatizados específicos para este projeto ainda;
+- os indicadores analíticos ainda não foram separados em uma camada própria;
+- não existe orquestração do pipeline.
+
+Essas limitações fazem parte do escopo atual. A intenção é evoluir o projeto aos poucos, mantendo as mudanças fáceis de entender.
 
 ## Como Instalar
 
@@ -89,7 +110,7 @@ No Linux/macOS:
 source .venv/bin/activate
 ```
 
-Instale as dependencias:
+Instale as dependências:
 
 ```bash
 python -m pip install -r requirements.txt
@@ -97,25 +118,25 @@ python -m pip install -r requirements.txt
 
 ## Como Rodar O ETL
 
-Execute com os caminhos padrao:
+Execute com os caminhos padrão:
 
 ```bash
 python -m src.etl
 ```
 
-No Windows, se o comando `python` nao estiver disponivel, use o launcher:
+No Windows, se o comando `python` não estiver disponível, use o launcher:
 
 ```bash
 py -m src.etl
 ```
 
-Ou informe entrada, saida e log explicitamente:
+Ou informe entrada, saída e log explicitamente:
 
 ```bash
 python -m src.etl --input data/raw/vendas_exemplo.csv --output data/processed/vendas_processadas.parquet --log-file logs/etl_vendas.log
 ```
 
-Tambem e possivel executar o arquivo diretamente:
+Também é possível executar o arquivo diretamente:
 
 ```bash
 python src/etl.py
@@ -132,11 +153,11 @@ ID Venda,Data Venda,Cliente,Produto,Quantidade,Preco Unitario,Desconto
 1003,03/05/2026,Carla Lima,Teclado,1,230.90,10.90
 ```
 
-## Exemplo De Saida
+## Exemplo De Saída
 
 Arquivo: `data/processed/vendas_processadas.parquet`
 
-Colunas esperadas apos o processamento:
+Colunas esperadas após o processamento:
 
 ```text
 id_venda
@@ -158,19 +179,18 @@ valor_total = quantidade * preco_unitario - desconto
 
 ## Logs
 
-Os logs sao gerados em:
+Os logs são gerados em:
 
 ```text
 logs/etl_vendas.log
 ```
 
-Eles registram inicio e fim do pipeline, quantidade de linhas lidas, colunas padronizadas, duplicatas removidas, datas invalidas descartadas e exportacao do Parquet.
+Eles registram início e fim do pipeline, quantidade de linhas lidas, colunas padronizadas, duplicatas removidas, datas inválidas descartadas e exportação do Parquet.
 
-## Proximos Passos
+## Próximos Passos
 
-- Adicionar testes automatizados com pytest.
-- Criar validacoes de qualidade de dados.
-- Separar transformacoes em modulos menores.
-- Adicionar suporte a multiplos arquivos CSV.
-- Criar uma camada de metricas agregadas por produto, cliente e periodo.
-- Orquestrar o pipeline com Airflow ou Prefect.
+- Adicionar testes automatizados para as transformações principais.
+- Criar validações simples de qualidade dos dados.
+- Gerar métricas agregadas por produto e período.
+- Criar consultas SQL usando SQLite.
+- Montar um dashboard simples com os indicadores gerados.
