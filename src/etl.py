@@ -33,11 +33,11 @@ def normalize_column_name(column: str) -> str:
 
 
 def read_csv(input_file: Path, logger: logging.Logger) -> pd.DataFrame:
-    """Le o arquivo CSV de vendas e retorna um DataFrame."""
+    """Lê o arquivo CSV de vendas e retorna um DataFrame."""
     logger.info("Lendo CSV: %s", input_file)
 
     if not input_file.exists():
-        raise FileNotFoundError(f"Arquivo CSV nao encontrado: {input_file}")
+        raise FileNotFoundError(f"Arquivo CSV não encontrado: {input_file}")
 
     dataframe = pd.read_csv(input_file)
     logger.info("CSV lido com sucesso: %s linhas, %s colunas", *dataframe.shape)
@@ -48,12 +48,12 @@ def validate_columns(dataframe: pd.DataFrame) -> None:
     missing_columns = REQUIRED_COLUMNS.difference(dataframe.columns)
     if missing_columns:
         missing = ", ".join(sorted(missing_columns))
-        raise ValueError(f"CSV de vendas sem colunas obrigatorias: {missing}")
+        raise ValueError(f"CSV de vendas sem colunas obrigatórias: {missing}")
 
 
 def clean_data(dataframe: pd.DataFrame, logger: logging.Logger) -> pd.DataFrame:
     """Limpa, transforma e enriquece os dados de vendas."""
-    logger.info("Iniciando limpeza e transformacao dos dados de vendas")
+    logger.info("Iniciando limpeza e transformação dos dados de vendas")
 
     cleaned = dataframe.copy()
     cleaned.columns = [normalize_column_name(column) for column in cleaned.columns]
@@ -68,8 +68,8 @@ def clean_data(dataframe: pd.DataFrame, logger: logging.Logger) -> pd.DataFrame:
         cleaned[column] = cleaned[column].astype("string").str.strip()
         cleaned[column] = cleaned[column].replace("", pd.NA)
 
-    cleaned["cliente"] = cleaned["cliente"].fillna("Nao informado")
-    cleaned["produto"] = cleaned["produto"].fillna("Nao informado")
+    cleaned["cliente"] = cleaned["cliente"].fillna("Não informado")
+    cleaned["produto"] = cleaned["produto"].fillna("Não informado")
 
     cleaned["data_venda"] = pd.to_datetime(
         cleaned["data_venda"],
@@ -98,8 +98,8 @@ def clean_data(dataframe: pd.DataFrame, logger: logging.Logger) -> pd.DataFrame:
 
     logger.info("Colunas padronizadas: %s", list(cleaned.columns))
     logger.info("Duplicatas removidas: %s", duplicates_removed)
-    logger.info("Linhas removidas por data invalida: %s", invalid_dates)
-    logger.info("Limpeza concluida: %s linhas, %s colunas", *cleaned.shape)
+    logger.info("Linhas removidas por data inválida: %s", invalid_dates)
+    logger.info("Limpeza concluída: %s linhas, %s colunas", *cleaned.shape)
 
     return cleaned
 
@@ -112,10 +112,10 @@ def export_parquet(dataframe: pd.DataFrame, output_file: Path, logger: logging.L
         dataframe.to_parquet(output_file, index=False)
     except ImportError:
         raise ImportError(
-            "Dependencia para exportar Parquet nao encontrada. "
-            "Instale as dependencias com: python -m pip install -r requirements.txt"
+            "Dependência para exportar Parquet não encontrada. "
+            "Instale as dependências com: python -m pip install -r requirements.txt"
         ) from None
-    logger.info("Arquivo Parquet exportado com sucesso")
+    logger.info("Arquivo Parquet exportado com sucesso: %s linhas", len(dataframe))
 
 
 def run_pipeline(input_file: Path, output_file: Path, log_file: Path) -> None:
@@ -142,19 +142,19 @@ def parse_args() -> argparse.Namespace:
         "--input",
         type=Path,
         default=DEFAULT_INPUT_FILE,
-        help=f"Caminho do CSV de entrada. Padrao: {DEFAULT_INPUT_FILE}",
+        help=f"Caminho do CSV de entrada. Padrão: {DEFAULT_INPUT_FILE}",
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=DEFAULT_OUTPUT_FILE,
-        help=f"Caminho do Parquet de saida. Padrao: {DEFAULT_OUTPUT_FILE}",
+        help=f"Caminho do Parquet de saída. Padrão: {DEFAULT_OUTPUT_FILE}",
     )
     parser.add_argument(
         "--log-file",
         type=Path,
         default=DEFAULT_LOG_FILE,
-        help=f"Caminho do arquivo de log. Padrao: {DEFAULT_LOG_FILE}",
+        help=f"Caminho do arquivo de log. Padrão: {DEFAULT_LOG_FILE}",
     )
     return parser.parse_args()
 
