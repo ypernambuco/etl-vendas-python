@@ -7,7 +7,7 @@
 
 Projeto simples de ETL de vendas feito para praticar Python, pandas e organização básica de um pipeline de dados.
 
-A ideia é partir de um arquivo CSV pequeno, aplicar algumas regras de limpeza e salvar uma versão processada em Parquet. O projeto não tenta simular uma arquitetura de produção; ele serve como estudo prático e como registro da minha evolução com dados.
+A ideia é partir de um arquivo CSV pequeno, aplicar algumas regras de limpeza e salvar uma versão processada em Parquet. É um estudo prático, sem tentar parecer um sistema de produção.
 
 ## Objetivo
 
@@ -100,7 +100,7 @@ python -m venv .venv
 
 No Windows:
 
-```bash
+```powershell
 .venv\Scripts\activate
 ```
 
@@ -126,7 +126,7 @@ python -m src.etl
 
 No Windows, se o comando `python` não estiver disponível, use o launcher:
 
-```bash
+```powershell
 py -m src.etl
 ```
 
@@ -136,11 +136,7 @@ Ou informe entrada, saída e log explicitamente:
 python -m src.etl --input data/raw/vendas_exemplo.csv --output data/processed/vendas_processadas.parquet --log-file logs/etl_vendas.log
 ```
 
-Também é possível executar o arquivo diretamente:
-
-```bash
-python src/etl.py
-```
+Uso `python -m src.etl` para executar o módulo a partir da raiz do projeto. Isso deixa os imports mais previsíveis e evita depender do caminho do arquivo.
 
 ## Exemplo De Entrada
 
